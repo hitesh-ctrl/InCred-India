@@ -1,0 +1,9 @@
+{
+  "name": "altscore",
+  "private": true,
+  "scripts": {
+    "dev": "cd frontend && pnpm install && pnpm run dev",
+    "build": "cd frontend && pnpm install && pnpm run build",
+    "preview": "cd frontend && pnpm run preview"
+  }
+}

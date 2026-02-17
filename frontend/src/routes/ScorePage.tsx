@@ -23,6 +23,31 @@ const defaultValues: Omit<ScoreRequest, 'consent'> = {
   sm_activity_level: 'medium',
 };
 
+function ChevronDownIcon() {
+  return (
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+    </svg>
+  );
+}
+
+function SpinnerIcon() {
+  return (
+    <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+    </svg>
+  );
+}
+
+function AlertIcon() {
+  return (
+    <svg className="w-4 h-4 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+    </svg>
+  );
+}
+
 export default function ScorePage() {
   const [form, setForm] = useState(defaultValues);
   const [consent, setConsent] = useState(false);
@@ -43,7 +68,7 @@ export default function ScorePage() {
       const res = await api.score(payload);
       setResult(res);
     } catch (e: unknown) {
-      const anyErr = e as any;
+      const anyErr = e as { response?: { data?: { detail?: string } } };
       setError(anyErr?.response?.data?.detail ?? 'Scoring failed');
     } finally {
       setLoading(false);
@@ -54,95 +79,65 @@ export default function ScorePage() {
 
   return (
     <div className="grid gap-8 lg:grid-cols-12 max-w-7xl mx-auto">
-      <div className="space-y-6 lg:col-span-7">
-        <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-glass border border-white/50 p-8">
-          <div className="mb-8">
-            <div className="inline-flex items-center rounded-lg bg-primary/10 px-3 py-1 text-xs font-medium text-primary mb-2">
-              Live Demo
-            </div>
-            <h2 className="text-3xl font-bold text-slate-900">Synthetic Application</h2>
-            <p className="text-slate-500 mt-2 text-lg">
-              Adjust behavioral inputs to generate a real-time credit score.
-            </p>
-          </div>
+      {/* Form Panel */}
+      <div className="lg:col-span-7 space-y-6">
+        <div>
+          <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-brand bg-brand-50 border border-brand-200 mb-3">
+            Live Demo
+          </span>
+          <h1 className="text-2xl font-bold text-ink tracking-tight">Synthetic Application</h1>
+          <p className="text-ink-secondary mt-1">
+            Adjust behavioral inputs to generate a real-time credit score.
+          </p>
+        </div>
 
+        <div className="card-surface rounded-card p-6">
           <div className="grid gap-8 md:grid-cols-2">
             <Section title="E-Commerce Behavior">
-              <NumberField
-                label="Transaction Count"
-                value={form.ecom_txn_count}
-                onChange={(v) => onChange('ecom_txn_count', v)}
-              />
-              <NumberField
-                label="Monthly Spend ($)"
-                value={form.ecom_spend}
-                onChange={(v) => onChange('ecom_spend', v)}
-              />
-              <NumberField
-                label="Refund Rate"
-                step={0.01}
-                value={form.ecom_refund_rate}
-                onChange={(v) => onChange('ecom_refund_rate', v)}
-              />
+              <NumberField label="Transaction Count" value={form.ecom_txn_count} onChange={(v) => onChange('ecom_txn_count', v)} />
+              <NumberField label="Monthly Spend ($)" value={form.ecom_spend} onChange={(v) => onChange('ecom_spend', v)} />
+              <NumberField label="Refund Rate" step={0.01} value={form.ecom_refund_rate} onChange={(v) => onChange('ecom_refund_rate', v)} />
             </Section>
 
             <Section title="Financial Health">
-              <NumberField
-                label="Utility Payment Ratio"
-                step={0.01}
-                value={form.utility_on_time_ratio}
-                onChange={(v) => onChange('utility_on_time_ratio', v)}
-              />
-              <NumberField
-                label="Net Cash Margin"
-                step={0.01}
-                value={form.net_cash_margin}
-                onChange={(v) => onChange('net_cash_margin', v)}
-              />
-              <NumberField
-                label="Monthly Income ($)"
-                value={form.income_monthly}
-                onChange={(v) => onChange('income_monthly', v)}
-              />
+              <NumberField label="Utility Payment Ratio" step={0.01} value={form.utility_on_time_ratio} onChange={(v) => onChange('utility_on_time_ratio', v)} />
+              <NumberField label="Net Cash Margin" step={0.01} value={form.net_cash_margin} onChange={(v) => onChange('net_cash_margin', v)} />
+              <NumberField label="Monthly Income ($)" value={form.income_monthly} onChange={(v) => onChange('income_monthly', v)} />
             </Section>
 
-            <div className="md:col-span-2 pt-4 border-t border-slate-200/50 mt-2">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Social Engagement Level</label>
+            <div className="md:col-span-2 pt-4 border-t border-surface-border mt-2">
+              <label className="block text-sm font-medium text-ink mb-2">Social Engagement Level</label>
               <div className="relative">
                 <select
-                  className="w-full appearance-none rounded-xl border border-slate-300 bg-white/50 px-4 py-3 text-sm text-slate-700 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer hover:bg-white"
+                  className="w-full appearance-none rounded-lg border border-surface-border bg-surface px-4 py-2.5 text-sm text-ink focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 transition-colors cursor-pointer hover:border-surface-border-hover"
                   value={form.sm_activity_level}
-                  onChange={(e) =>
-                    onChange('sm_activity_level', e.target.value as 'low' | 'medium' | 'high')
-                  }
+                  onChange={(e) => onChange('sm_activity_level', e.target.value as 'low' | 'medium' | 'high')}
                 >
                   <option value="low">Low Activity</option>
                   <option value="medium">Medium Activity</option>
                   <option value="high">High Activity</option>
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-ink-tertiary">
+                  <ChevronDownIcon />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-slate-200/50">
-            <label className="flex items-start gap-4 cursor-pointer group p-4 rounded-xl border border-transparent hover:bg-primary/5 transition-colors">
-              <div className="relative flex items-center mt-0.5">
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(e) => {
-                    setConsent(e.target.checked);
-                    if (!e.target.checked) setResult(null);
-                  }}
-                  className="peer h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary transition-all cursor-pointer"
-                />
-              </div>
-              <div className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">
-                <span className="font-semibold block text-slate-900 mb-0.5">Data Consent Required</span>
-                I ensure that I have read the privacy policy and consent to the processing of this synthetic data for scoring purposes.
+          <div className="mt-8 pt-6 border-t border-surface-border">
+            <label className="flex items-start gap-3 cursor-pointer group p-3 -m-3 rounded-lg hover:bg-surface-secondary transition-colors">
+              <input
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => {
+                  setConsent(e.target.checked);
+                  if (!e.target.checked) setResult(null);
+                }}
+                className="mt-0.5 h-4 w-4 rounded border-surface-border-hover text-brand focus:ring-brand/30 cursor-pointer"
+              />
+              <div className="text-sm">
+                <span className="font-medium text-ink block mb-0.5">Data Consent Required</span>
+                <span className="text-ink-secondary">I ensure that I have read the privacy policy and consent to the processing of this synthetic data for scoring purposes.</span>
               </div>
             </label>
 
@@ -150,105 +145,111 @@ export default function ScorePage() {
               type="button"
               onClick={handleSubmit}
               disabled={!consent || loading}
-              className="mt-6 w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary to-vivid-600 px-6 py-4 text-sm font-bold text-white shadow-neon hover:shadow-lg hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transition-all transform active:scale-[0.98]"
+              className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-semibold text-ink-inverse hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <>
+                  <SpinnerIcon />
                   Analyzing Data Patterns...
-                </span>
-              ) : 'Compute CrediScore AI'}
+                </>
+              ) : 'Compute Credit Score'}
             </button>
 
             {error && (
-              <div className="mt-4 rounded-xl bg-red-50 border border-red-100 p-4 text-sm text-red-600 flex items-start gap-3">
-                <span className="text-xl">⚠️</span>
-                <div>{error}</div>
+              <div className="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700 flex items-start gap-2" role="alert">
+                <AlertIcon />
+                <span>{error}</span>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      <div className="space-y-6 lg:col-span-5">
-        <div className={`h-full min-h-[500px] rounded-2xl border transition-all duration-700 overflow-hidden relative ${result ? 'bg-white/80 backdrop-blur-md border-white/50 shadow-glass' : 'bg-white/40 backdrop-blur-sm border-dashed border-slate-300 flex items-center justify-center'}`}>
+      {/* Result Panel */}
+      <div className="lg:col-span-5">
+        <div className={`min-h-[500px] rounded-card border transition-colors duration-300 ${
+          result
+            ? 'card-surface'
+            : 'border-dashed border-surface-border-hover bg-surface-secondary flex items-center justify-center'
+        }`}>
           {!result && (
-            <div className="text-center text-slate-400 p-8">
-              <div className="text-6xl mb-4 opacity-50">🔮</div>
-              <h3 className="text-lg font-semibold text-slate-600 mb-2">Awaiting Input</h3>
-              <p className="text-sm max-w-xs mx-auto">
-                Fill out the behavioral form and grant consent to generate your AI-powered credit assessment.
+            <div className="text-center p-8">
+              <div className="w-12 h-12 rounded-full bg-surface-tertiary flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-ink-tertiary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" />
+                </svg>
+              </div>
+              <h3 className="text-sm font-semibold text-ink mb-1">Awaiting Input</h3>
+              <p className="text-xs text-ink-tertiary max-w-[200px] mx-auto leading-relaxed">
+                Fill out the form and grant consent to generate your credit assessment.
               </p>
             </div>
           )}
-          {result && (
-            <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700 h-full flex flex-col">
-              <div>
-                <div className="flex justify-between items-start mb-2">
-                  <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">Credit Score</h2>
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm ${result.risk_band === 'Very Low' || result.risk_band === 'Low' ? 'bg-emerald-100 text-emerald-700' :
-                      result.risk_band === 'Medium' ? 'bg-amber-100 text-amber-700' :
-                        'bg-red-100 text-red-700'
-                    }`}>
-                    {result.risk_band} Risk
-                  </span>
-                </div>
 
-                <div className="flex items-baseline gap-1 mt-2">
-                  <span className="text-7xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-slate-900 to-slate-600">
+          {result && (
+            <div className="p-6 space-y-6 flex flex-col h-full">
+              {/* Score Header */}
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xs font-semibold text-ink-tertiary uppercase tracking-wider">Credit Score</h2>
+                  <RiskBadge band={result.risk_band} />
+                </div>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-5xl font-extrabold text-ink tracking-tighter">
                     {result.credit_score.toFixed(0)}
                   </span>
-                  <span className="text-2xl font-bold text-slate-300">/ 900</span>
+                  <span className="text-lg font-semibold text-ink-tertiary">/ 900</span>
                 </div>
-
-                {/* Updated Score Bar */}
-                <div className="mt-6 relative h-4 w-full bg-slate-100/80 rounded-full overflow-hidden shadow-inner">
+                <div className="mt-4 h-2 w-full bg-surface-tertiary rounded-full overflow-hidden">
                   <div
-                    className={`absolute top-0 left-0 h-full rounded-full transition-all duration-1500 ease-out shadow-[0_0_20px_rgba(0,0,0,0.3)] ${result.credit_score >= 700 ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' :
-                        result.credit_score >= 600 ? 'bg-gradient-to-r from-amber-400 to-amber-600' :
-                          'bg-gradient-to-r from-red-500 to-pink-600'
-                      }`}
+                    className={`h-full rounded-full transition-all duration-1000 ease-out ${
+                      result.credit_score >= 700
+                        ? 'bg-emerald-500'
+                        : result.credit_score >= 600
+                          ? 'bg-amber-500'
+                          : 'bg-red-500'
+                    }`}
                     style={{ width: `${Math.max(5, scorePercent)}%` }}
-                  >
-                    <div className="absolute inset-0 bg-white/30 animate-[shimmer_2s_infinite]"></div>
-                  </div>
+                  />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-slate-50/80 rounded-xl border border-white/50 shadow-sm backdrop-blur-sm">
-                  <div className="text-xs font-semibold text-slate-400 uppercase mb-1">Approval Odds</div>
-                  <div className="text-2xl font-bold text-slate-900">{(result.probability_good * 100).toFixed(1)}%</div>
+              {/* Probability Cards */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-4 rounded-lg bg-surface-secondary border border-surface-border">
+                  <div className="text-xs font-medium text-ink-tertiary uppercase tracking-wide mb-1">Approval Odds</div>
+                  <div className="text-xl font-bold text-ink">{(result.probability_good * 100).toFixed(1)}%</div>
                 </div>
-                <div className="p-4 bg-slate-50/80 rounded-xl border border-white/50 shadow-sm backdrop-blur-sm">
-                  <div className="text-xs font-semibold text-slate-400 uppercase mb-1">Default Risk</div>
-                  <div className="text-2xl font-bold text-slate-900">{(result.probability_default * 100).toFixed(1)}%</div>
+                <div className="p-4 rounded-lg bg-surface-secondary border border-surface-border">
+                  <div className="text-xs font-medium text-ink-tertiary uppercase tracking-wide mb-1">Default Risk</div>
+                  <div className="text-xl font-bold text-ink">{(result.probability_default * 100).toFixed(1)}%</div>
                 </div>
               </div>
 
+              {/* SHAP Explanations */}
               <div className="flex-1">
-                <h3 className="mb-4 text-sm font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                  Key Drivers <span className="text-xs font-normal normal-case text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">SHAP Analysis</span>
-                </h3>
+                <div className="flex items-center gap-2 mb-4">
+                  <h3 className="text-xs font-semibold text-ink-tertiary uppercase tracking-wider">Key Drivers</h3>
+                  <span className="text-[10px] font-medium text-ink-tertiary bg-surface-tertiary px-1.5 py-0.5 rounded">SHAP</span>
+                </div>
                 <ul className="space-y-4">
-                  {result.top_explanations.map((ex, i) => (
-                    <li key={ex.feature_key} className="space-y-2 animate-in slide-in-from-right-4 fade-in" style={{ animationDelay: `${i * 100}ms` }}>
+                  {result.top_explanations.map((ex) => (
+                    <li key={ex.feature_key} className="space-y-1.5">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="font-medium text-slate-700">{ex.feature_label}</span>
-                        <span className={`text-xs font-bold uppercase tracking-wider ${ex.impact === 'reduces risk' ? 'text-emerald-600' : 'text-red-500'}`}>{ex.impact}</span>
+                        <span className="font-medium text-ink">{ex.feature_label}</span>
+                        <span className={`text-xs font-semibold uppercase tracking-wide ${
+                          ex.impact === 'reduces risk' ? 'text-emerald-600' : 'text-red-600'
+                        }`}>
+                          {ex.impact}
+                        </span>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                          <div
-                            className={`h-full rounded-full shadow-[0_0_10px_rgba(0,0,0,0.2)] ${ex.shap_value >= 0 ? 'bg-gradient-to-r from-red-400 to-red-600' : 'bg-gradient-to-r from-emerald-400 to-emerald-600'}`}
-                            style={{
-                              width: `${Math.min(
-                                100,
-                                Math.abs(ex.shap_value) * 50,
-                              ).toString()}%`,
-                            }}
-                          />
-                        </div>
+                      <div className="h-1.5 bg-surface-tertiary rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${
+                            ex.shap_value >= 0 ? 'bg-red-400' : 'bg-emerald-400'
+                          }`}
+                          style={{ width: `${Math.min(100, Math.abs(ex.shap_value) * 50)}%` }}
+                        />
                       </div>
                     </li>
                   ))}
@@ -262,18 +263,28 @@ export default function ScorePage() {
   );
 }
 
+function RiskBadge({ band }: { band: string }) {
+  const classes =
+    band === 'Very Low' || band === 'Low'
+      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+      : band === 'Medium'
+        ? 'bg-amber-50 text-amber-700 border-amber-200'
+        : 'bg-red-50 text-red-700 border-red-200';
+
+  return (
+    <span className={`px-2.5 py-1 rounded-md text-xs font-semibold border ${classes}`}>
+      {band} Risk
+    </span>
+  );
+}
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="space-y-4">
-      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-        {title}
-        <div className="h-px bg-slate-200 flex-1"></div>
-      </h3>
-      <div className="space-y-4">
-        {children}
-      </div>
+      <h3 className="text-xs font-semibold text-ink-tertiary uppercase tracking-wider">{title}</h3>
+      <div className="space-y-3">{children}</div>
     </div>
-  )
+  );
 }
 
 interface NumberFieldProps {
@@ -285,14 +296,14 @@ interface NumberFieldProps {
 
 function NumberField({ label, value, step = 1, onChange }: NumberFieldProps) {
   return (
-    <div className="space-y-1.5 group">
-      <label className="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">{label}</label>
+    <div className="space-y-1.5">
+      <label className="text-sm font-medium text-ink">{label}</label>
       <input
         type="number"
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="block w-full rounded-xl border-slate-300 bg-white/50 px-3 py-2.5 text-sm shadow-sm transition-all focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 hover:border-primary/50"
+        className="block w-full rounded-lg border border-surface-border bg-surface px-3 py-2 text-sm text-ink transition-colors focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none hover:border-surface-border-hover"
       />
     </div>
   );
