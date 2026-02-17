@@ -4,40 +4,51 @@ import ScorePage from './routes/ScorePage';
 import DashboardPage from './routes/DashboardPage';
 import ResponsibleAIPage from './routes/ResponsibleAIPage';
 
+function Logo() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="#0A6E5C" />
+      <path d="M14 6L20 20H8L14 6Z" fill="white" fillOpacity="0.9" />
+      <circle cx="14" cy="17" r="2.5" fill="#0A6E5C" />
+    </svg>
+  );
+}
+
 function Nav() {
   const location = useLocation();
-  const linkClass = (path: string) =>
-    `relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${location.pathname === path
-      ? 'text-primary bg-primary/5'
-      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-    }`;
+
+  const navItems = [
+    { path: '/', label: 'Overview' },
+    { path: '/score', label: 'Scoring Demo' },
+    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/responsible-ai', label: 'Responsible AI' },
+  ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/20 bg-white/60 backdrop-blur-xl shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-        <div className="flex items-center gap-2 group cursor-pointer">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-vivid-600 text-white font-bold shadow-neon transform group-hover:scale-105 transition-transform duration-300">
-            A
-          </div>
-          <div className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">AltScore</div>
-        </div>
-        <nav className="flex gap-1">
-          <Link to="/" className={linkClass('/')}>
-            Overview
-            {location.pathname === '/' && <span className="absolute bottom-0 left-0 h-0.5 w-full bg-primary rounded-full" />}
-          </Link>
-          <Link to="/score" className={linkClass('/score')}>
-            Scoring Demo
-            {location.pathname === '/score' && <span className="absolute bottom-0 left-0 h-0.5 w-full bg-primary rounded-full" />}
-          </Link>
-          <Link to="/dashboard" className={linkClass('/dashboard')}>
-            Dashboard
-            {location.pathname === '/dashboard' && <span className="absolute bottom-0 left-0 h-0.5 w-full bg-primary rounded-full" />}
-          </Link>
-          <Link to="/responsible-ai" className={linkClass('/responsible-ai')}>
-            Responsible AI
-            {location.pathname === '/responsible-ai' && <span className="absolute bottom-0 left-0 h-0.5 w-full bg-primary rounded-full" />}
-          </Link>
+    <header className="sticky top-0 z-50 border-b border-surface-border bg-surface/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 h-16">
+        <Link to="/" className="flex items-center gap-2.5 group" aria-label="AltScore Home">
+          <Logo />
+          <span className="text-lg font-bold text-ink tracking-tight">AltScore</span>
+        </Link>
+        <nav className="flex items-center gap-1" aria-label="Main navigation">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`relative px-3.5 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+                  isActive
+                    ? 'text-brand bg-brand-50'
+                    : 'text-ink-secondary hover:text-ink hover:bg-surface-tertiary'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>
@@ -46,17 +57,10 @@ function Nav() {
 
 export default function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 relative selection:bg-purple-200 selection:text-purple-900 overflow-hidden">
-      {/* Background glow effects */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-      </div>
-
+    <div className="flex min-h-screen flex-col bg-surface-secondary">
       <Nav />
-      <main className="flex-1 z-10 relative">
-        <div className="mx-auto max-w-7xl px-4 py-8">
+      <main className="flex-1">
+        <div className="mx-auto max-w-7xl px-6 py-10">
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/score" element={<ScorePage />} />
@@ -65,9 +69,16 @@ export default function App() {
           </Routes>
         </div>
       </main>
-
-      <footer className="py-6 text-center text-xs text-slate-400 z-10 relative">
-        <p>© 2024 AltScore Fintech Demo. Synthetic data only.</p>
+      <footer className="border-t border-surface-border py-8 mt-auto">
+        <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Logo />
+            <span className="text-sm font-semibold text-ink">AltScore</span>
+          </div>
+          <p className="text-sm text-ink-tertiary">
+            {'2025 AltScore Fintech Demo. Synthetic data only.'}
+          </p>
+        </div>
       </footer>
     </div>
   );

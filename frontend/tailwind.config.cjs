@@ -4,55 +4,53 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
-        primary: {
-          DEFAULT: "#6366f1", // Indigo 500 - brighter
-          50: "#eef2ff",
-          100: "#e0e7ff",
-          200: "#c7d2fe",
-          300: "#a5b4fc",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
-          800: "#3730a3",
-          900: "#312e81",
+        brand: {
+          DEFAULT: "#0A6E5C",
+          50: "#ecfdf5",
+          100: "#d1fae5",
+          200: "#a7f3d0",
+          300: "#6ee7b7",
+          400: "#34d399",
+          500: "#0A6E5C",
+          600: "#085D4E",
+          700: "#064C40",
+          800: "#043D33",
+          900: "#022C25",
         },
-        vivid: {
-          500: "#8b5cf6", // Violet
-          600: "#7c3aed",
+        accent: {
+          DEFAULT: "#F59E0B",
+          50: "#FFFBEB",
+          100: "#FEF3C7",
+          200: "#FDE68A",
+          300: "#FCD34D",
+          400: "#FBBF24",
+          500: "#F59E0B",
         },
-        slate: {
-          850: "#1e293b",
-          900: "#0f172a",
-          950: "#020617",
-        }
-      },
-      animation: {
-        blob: "blob 7s infinite",
-      },
-      keyframes: {
-        blob: {
-          "0%": {
-            transform: "translate(0px, 0px) scale(1)",
-          },
-          "33%": {
-            transform: "translate(30px, -50px) scale(1.1)",
-          },
-          "66%": {
-            transform: "translate(-20px, 20px) scale(0.9)",
-          },
-          "100%": {
-            transform: "translate(0px, 0px) scale(1)",
-          },
+        surface: {
+          DEFAULT: "#FFFFFF",
+          secondary: "#F8FAFB",
+          tertiary: "#F1F4F6",
+          border: "#E2E8F0",
+          "border-hover": "#CBD5E1",
+        },
+        ink: {
+          DEFAULT: "#0F172A",
+          secondary: "#475569",
+          tertiary: "#94A3B8",
+          inverse: "#FFFFFF",
         },
       },
       boxShadow: {
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
-        'neon': '0 0 15px rgba(99, 102, 241, 0.5), 0 0 30px rgba(99, 102, 241, 0.3)',
-      }
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03)',
+        'card-hover': '0 4px 12px 0 rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04)',
+        'elevated': '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)',
+      },
+      borderRadius: {
+        'card': '12px',
+      },
     },
   },
   plugins: [],

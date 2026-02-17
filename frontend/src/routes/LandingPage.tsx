@@ -1,64 +1,115 @@
+import { Link } from 'react-router-dom';
+
+function DataIcon() {
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+    </svg>
+  );
+}
+
+function TransparencyIcon() {
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  );
+}
+
+function FairnessIcon() {
+  return (
+    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+    </svg>
+  );
+}
+
 export default function LandingPage() {
   return (
-    <div className="space-y-16 py-12">
-      <section className="text-center max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-        <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium text-primary bg-primary/10 ring-1 ring-inset ring-primary/20 mb-4 hover:bg-primary/20 transition-colors cursor-default">
-          ✨ Next-Gen Credit Scoring
+    <div className="space-y-20 py-8">
+      {/* Hero Section */}
+      <section className="text-center max-w-3xl mx-auto space-y-6">
+        <div className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide uppercase text-brand bg-brand-50 border border-brand-200">
+          Next-Gen Credit Scoring
         </div>
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 leading-tight">
-          AI-Powered <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-vivid-500 to-purple-600">Credit Decisions</span>
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-ink leading-[1.1] text-balance">
+          AI-Powered Credit Decisions
         </h1>
-        <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
-          Leverage alternative data signals like e-commerce behavior and digital wallet usage to assess creditworthiness with <span className="font-semibold text-slate-800">unmatched precision</span>.
+        <p className="text-lg text-ink-secondary leading-relaxed max-w-xl mx-auto text-balance">
+          Leverage alternative data signals like e-commerce behavior and digital wallet usage to assess creditworthiness with unmatched precision.
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4 pt-6">
-          <a href="/score" className="px-8 py-4 rounded-xl bg-primary text-white font-bold text-lg hover:bg-opacity-90 transition-all shadow-neon hover:shadow-primary/50 hover:-translate-y-1 relative overflow-hidden group">
-            <span className="relative z-10">Try the Demo</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </a>
-          <a href="/responsible-ai" className="px-8 py-4 rounded-xl bg-white text-slate-700 font-bold text-lg hover:bg-slate-50 border border-slate-200 transition-all hover:border-slate-300 hover:shadow-lg">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+          <Link
+            to="/score"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-brand text-ink-inverse font-semibold text-sm hover:bg-brand-600 transition-colors shadow-card"
+          >
+            Try the Demo
+            <ArrowRightIcon />
+          </Link>
+          <Link
+            to="/responsible-ai"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-surface text-ink font-semibold text-sm border border-surface-border hover:border-surface-border-hover hover:shadow-card transition-all"
+          >
             Explainability & Fair AI
-          </a>
+          </Link>
         </div>
       </section>
 
-      <section className="grid gap-8 md:grid-cols-3 perspective-1000">
+      {/* Stats Row */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        <StatCard value="18+" label="Data Signals Analyzed" />
+        <StatCard value="SHAP" label="Explainability Engine" />
+        <StatCard value="100%" label="Bias Monitoring" />
+      </section>
+
+      {/* Feature Cards */}
+      <section className="grid gap-6 md:grid-cols-3">
         <FeatureCard
           title="Alternative Data"
           desc="Go beyond traditional bureaus. Analyze utility payments, digital wallet volume, and e-commerce trends."
-          icon="📊"
-          delay={0}
+          icon={<DataIcon />}
         />
         <FeatureCard
           title="Transparent AI"
           desc="No black boxes. Get SHAP-based explanations for every single score generated by the model."
-          icon="🔍"
-          delay={100}
+          icon={<TransparencyIcon />}
         />
         <FeatureCard
           title="Fair & Bias-Free"
           desc="Built-in fairness monitoring ensures equitable outcomes across demographics and income levels."
-          icon="⚖️"
-          delay={200}
+          icon={<FairnessIcon />}
         />
       </section>
     </div>
   );
 }
 
-function FeatureCard({ title, desc, icon, delay }: { title: string; desc: string; icon: string; delay: number }) {
+function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div
-      className="rounded-2xl bg-white/60 backdrop-blur-sm p-8 shadow-glass border border-white/50 card-hover flex flex-col items-start gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-backwards"
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">
+    <div className="text-center p-6 card-surface rounded-card">
+      <div className="text-2xl font-extrabold text-brand tracking-tight">{value}</div>
+      <div className="text-sm text-ink-secondary mt-1">{label}</div>
+    </div>
+  );
+}
+
+function FeatureCard({ title, desc, icon }: { title: string; desc: string; icon: React.ReactNode }) {
+  return (
+    <div className="card-surface-hover rounded-card p-6 flex flex-col gap-4">
+      <div className="w-10 h-10 rounded-lg bg-brand-50 text-brand flex items-center justify-center">
         {icon}
       </div>
-      <h3 className="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">{title}</h3>
-      <p className="text-slate-600 leading-relaxed">
-        {desc}
-      </p>
+      <h3 className="text-lg font-semibold text-ink">{title}</h3>
+      <p className="text-sm text-ink-secondary leading-relaxed">{desc}</p>
     </div>
-  )
+  );
 }
